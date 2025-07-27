@@ -22,9 +22,10 @@ import {
 import { useParams, useRouter } from "next/navigation";
 
 
-export default function CreatorProfile () {
+export default function CreatorProfile() {
   const navigate = useRouter();
-  const { creatorId } = useParams();
+  const params = useParams();
+  const creatorId  = params.slug; 
   const [activeTab, setActiveTab] = useState("my-nfts");
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
@@ -61,14 +62,14 @@ export default function CreatorProfile () {
     const fetchCreatorData = async () => {
       try {
         const [profileRes, nftRes, likedRes, revenueRes, followingRes, vaultRes] = await Promise.all([
-          fetch(`http://localhost:3000/api/creator/${creatorId}`),
-          fetch(`http://localhost:3000/api/creator/${creatorId}/nfts`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/creator/${creatorId}`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/creator/${creatorId}/nfts`),
 
-          fetch(`http://localhost:3000/api/creator/${creatorId}/liked-songs`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/creator/${creatorId}/liked-songs`),
 
-          fetch(`http://localhost:3000/api/creator/${creatorId}/revenue`),
-          fetch(`http://localhost:3000/api/creator/${creatorId}/following`),
-          fetch(`http://localhost:3000/api/creator/${creatorId}/vaults`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/creator/${creatorId}/revenue`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/creator/${creatorId}/following`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/creator/${creatorId}/vaults`),
         ]);
 
         if (
@@ -103,6 +104,7 @@ export default function CreatorProfile () {
 
     fetchCreatorData();
   }, [creatorId]);
+
   const handleUpload = async () => {
     if (!musicFile || !thumbnail || !title || !genre || !description) {
       alert("Please fill in all required fields and upload files.");
@@ -175,8 +177,8 @@ export default function CreatorProfile () {
             <Button
               onClick={handleConnectWallet}
               className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${isWalletConnected
-                  ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white"
-                  : "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white"
+                ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white"
+                : "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-white"
                 } glow-golden`}
             >
               <Wallet className="w-5 h-5" />
@@ -238,8 +240,8 @@ export default function CreatorProfile () {
                   onClick={() => setActiveTab(tab.id)}
                   variant={activeTab === tab.id ? "default" : "ghost"}
                   className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 ${activeTab === tab.id
-                      ? "bg-gradient-to-r from-yellow-400 to-yellow-500 text-white glow-golden"
-                      : "text-emerald-600 hover:text-golden-glow hover:bg-golden-glow/10"
+                    ? "bg-gradient-to-r from-yellow-400 to-yellow-500 text-white glow-golden"
+                    : "text-emerald-600 hover:text-golden-glow hover:bg-golden-glow/10"
                     }`}
                 >
                   <tab.icon className="w-4 h-4" />

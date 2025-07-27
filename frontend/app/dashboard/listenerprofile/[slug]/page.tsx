@@ -19,7 +19,9 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function ListenerProfile ()  {
   const navigate = useRouter();
-  const { listenerId } = useParams(); 
+  const params = useParams();
+  const listenerId  = params.slug; 
+
   const [activeTab, setActiveTab] = useState("my-nfts");
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
@@ -33,11 +35,11 @@ export default function ListenerProfile ()  {
     const fetchListenerData = async () => {
       try {
         const [profileRes, nftRes, vaultRes, likedRes, followRes] = await Promise.all([
-          fetch(`http://localhost:3000/api/listener/${listenerId}`),
-          fetch(`http://localhost:3000/api/listener/${listenerId}/nfts`),
-          fetch(`http://localhost:3000/api/listener/${listenerId}/vaults`),
-          fetch(`http://localhost:3000/api/listener/${listenerId}/liked-songs`),
-          fetch(`http://localhost:3000/api/listener/${listenerId}/following`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/listener/${listenerId}`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/listener/${listenerId}/nfts`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/listener/${listenerId}/vaults`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/listener/${listenerId}/liked-songs`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/listener/${listenerId}/following`),
         ]);
     
         if (!profileRes.ok || !nftRes.ok || !vaultRes.ok || !likedRes.ok || !followRes.ok) {

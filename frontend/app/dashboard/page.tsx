@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { useMusicPlayer } from "@/components/contexts/MusicContext";
+import Image from "next/image";
 
 interface Song {
   id: string;
@@ -51,6 +52,7 @@ const Dashboard = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const navigate = useRouter();
+  const hasFetched = useRef(false);
 
   const {
     currentSong,
@@ -82,10 +84,14 @@ const Dashboard = () => {
     }
   }, []);
 
-
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    fetchSongs();
+  }, []);
   const fetchSongs = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/songs");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/songs`);
       const data = await response.json();
       setDiscoverSongs(data);
       setPlaylist(data);
@@ -142,7 +148,7 @@ const Dashboard = () => {
         ? userRole === "creator"
           ? `/dashboard/creatorprofile/${userId}`
           : `/dashboard/listenerprofile/${userId}`
-        : "/dashboard/profile"
+        : `/dashboard/listenerprofile/${userId}`
     },
 
 
@@ -157,12 +163,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen watercolor-bg overflow-hidden">
-      {/* Background Effects */}
-      <div className="fixed inset-0 opacity-30">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-radial from-yellow-400/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-40 right-40 w-80 h-80 bg-gradient-radial from-purple-400/15 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-blue-400/10 to-transparent rounded-full blur-3xl animate-pulse delay-2000"></div>
-      </div>
 
       <div className="relative z-10 flex min-h-screen">
         {/* Sidebar */}
@@ -198,7 +198,7 @@ const Dashboard = () => {
           <Card className="glass-panel rounded-3xl p-8 glow-golden cursor-pointer" onClick={handleCurrentSongClick}>
             <div className="flex items-center space-x-8">
               <img
-                src={currentSong?.cover || ""}
+                src={currentSong?.cover || "https://placehold.co/300x300?text=No+Image"}
                 alt={currentSong?.title || "Current Song"}
                 className="w-32 h-32 rounded-2xl object-cover shadow-lg"
               />
@@ -271,7 +271,7 @@ const Dashboard = () => {
                           className="w-full aspect-square rounded-xl object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = "https://via.placeholder.com/300x300?text=No+Image";
+                            target.src = "https://placehold.co/300x300?text=No+Image"
                           }}
                         />
                         <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
