@@ -48,7 +48,7 @@ const MusicDetail = () => {
       if (!id) return;
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:3000/api/songs/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/songs/${id}`);
         if (!res.ok) throw new Error("Song not found");
         const data = await res.json();
         setSongData(data);

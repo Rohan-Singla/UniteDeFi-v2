@@ -73,7 +73,7 @@ const Signup = () => {
 
       try {
         setSubmitting(true);
-        await axios.post("http://localhost:3000/api/auth/signup", formData);
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, formData);
         alert("Signup successful!");
         navigate.push("/dashboard");
       } catch (err: any) {
@@ -85,7 +85,7 @@ const Signup = () => {
     } else {
       try {
         setSubmitting(true);
-        await axios.post("http://localhost:3000/api/auth/signup", {
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
           email,
           password,
           role: "user",
