@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { WalletProvider } from '@suiet/wallet-kit';
 import '@suiet/wallet-kit/style.css';
 import Providers from "@/providers/privyProvider";
+import { MusicProvider } from "@/components/contexts/MusicContext";
+import "./globals.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,9 +29,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <WalletProvider>
-            {children}
-          </WalletProvider>
+          <MusicProvider>
+            <WalletProvider>
+              {children}
+            </WalletProvider>
+          </MusicProvider>
         </Providers>
       </body>
     </html>

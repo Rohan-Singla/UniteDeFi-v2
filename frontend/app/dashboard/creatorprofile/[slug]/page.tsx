@@ -24,7 +24,8 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function CreatorProfile() {
   const navigate = useRouter();
-  const { creatorId } = useParams();
+  const params = useParams();
+  const creatorId  = params.slug; 
   const [activeTab, setActiveTab] = useState("my-nfts");
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 

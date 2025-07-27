@@ -20,7 +20,8 @@ const formatTime = (seconds: number) => {
 };
 
 const MusicDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+  const id = params.slug;
   const navigate = useRouter();
 
   const {
@@ -67,7 +68,7 @@ const MusicDetail = () => {
     setQuantity(1);
     setShowBuyModal(true);
   };
-  
+
 
   const isThisSongActive = currentSong?.id === songData?.id;
 
@@ -78,7 +79,7 @@ const MusicDetail = () => {
       setCurrentSong(songData);
     }
   };
-  
+
 
   const currentTime = isThisSongActive ? progress : 0;
   const totalDuration = isThisSongActive ? duration : 0;
@@ -89,11 +90,6 @@ const MusicDetail = () => {
 
   return (
     <div className="min-h-screen emerald-bg relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="fixed inset-0 opacity-20">
-        <div className="absolute top-40 left-40 w-96 h-96 bg-gradient-radial from-yellow-400/30 to-transparent rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-radial from-emerald-400/25 to-transparent rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
 
       <div className="relative z-10 min-h-screen p-6">
         {/* Header */}
@@ -131,7 +127,7 @@ const MusicDetail = () => {
           <Card className="glass-panel rounded-3xl p-8 mb-8 glow-golden float">
             <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-8 lg:space-y-0 lg:space-x-12">
               <img
-                src={songData.cover}
+                src={songData.cover || "https://placehold.co/300x300?text=No+Image"}
                 alt={songData.title}
                 className="w-80 h-80 rounded-2xl object-cover shadow-2xl"
               />
@@ -234,39 +230,39 @@ const MusicDetail = () => {
           <Card className="glass-panel rounded-3xl p-8 max-w-md w-full glow-golden slide-in-right">
             <div className="text-center space-y-6">
               <h3 className="text-2xl font-bold text-gray-800">Buy Music Token</h3>
-              
+
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Token Price:</span>
                   <span className="font-semibold text-yellow-600">{songData.stats.tokenPrice}</span>
                 </div>
-                
-                <div className="flex justify-between items-center">
-  <span className="text-gray-600">Quantity:</span>
-  <div className="flex items-center space-x-3">
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-    >
-      -
-    </Button>
-    <span className="w-8 text-center">{quantity}</span>
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => setQuantity((q) => q + 1)}
-    >
-      +
-    </Button>
-  </div>
-</div>
 
-                
-<div className="flex justify-between items-center text-lg font-semibold">
-  <span>Total:</span>
-  <span className="text-yellow-600">{totalPrice}</span>
-</div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Quantity:</span>
+                  <div className="flex items-center space-x-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    >
+                      -
+                    </Button>
+                    <span className="w-8 text-center">{quantity}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setQuantity((q) => q + 1)}
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+
+
+                <div className="flex justify-between items-center text-lg font-semibold">
+                  <span>Total:</span>
+                  <span className="text-yellow-600">{totalPrice}</span>
+                </div>
 
               </div>
 

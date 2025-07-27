@@ -148,7 +148,7 @@ const Dashboard = () => {
         ? userRole === "creator"
           ? `/dashboard/creatorprofile/${userId}`
           : `/dashboard/listenerprofile/${userId}`
-        : "/dashboard/profile"
+        : `/dashboard/listenerprofile/${userId}`
     },
 
 
@@ -198,7 +198,7 @@ const Dashboard = () => {
           <Card className="glass-panel rounded-3xl p-8 glow-golden cursor-pointer" onClick={handleCurrentSongClick}>
             <div className="flex items-center space-x-8">
               <img
-                src={currentSong?.cover || ""}
+                src={currentSong?.cover || "https://placehold.co/300x300?text=No+Image"}
                 alt={currentSong?.title || "Current Song"}
                 className="w-32 h-32 rounded-2xl object-cover shadow-lg"
               />

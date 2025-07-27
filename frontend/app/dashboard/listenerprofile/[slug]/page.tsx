@@ -19,7 +19,9 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function ListenerProfile ()  {
   const navigate = useRouter();
-  const { listenerId } = useParams(); 
+  const params = useParams();
+  const listenerId  = params.slug; 
+
   const [activeTab, setActiveTab] = useState("my-nfts");
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
